@@ -1,6 +1,6 @@
-# 时间 Todo 应用 - Vue + Flask
+# 时间 Todo 应用 - Vue + Go
 
-这是一个基于 Vue 3 前端和 Flask 后端的 Todo 应用，从原 Node.js 版本改写而来。
+这是一个基于 Vue 3 前端和 Go 后端的 Todo 应用，从原 Node.js 版本改写而来。
 
 ## 📸 项目截图
 
@@ -14,8 +14,9 @@
 - **原生 CSS** - 无需任何 UI 框架
 
 ### 后端
-- **Flask** - Python 轻量级 Web 框架
-- **Flask-CORS** - 跨域资源共享支持
+- **Go 1.21+** - 高性能编译型语言
+- **Gorilla Mux** - 强大的 HTTP 路由器
+- **CORS 中间件** - 跨域资源共享支持
 - **JSON 文件存储** - 简单可靠的数据持久化
 
 ## ✨ 功能特性
@@ -37,17 +38,14 @@
 
 ### 方式二：手动启动
 
-#### 1. 安装后端依赖
+#### 1. 安装 Go
 
+确保已安装 Go 1.21 或更高版本：
 ```bash
-# 创建 Python 虚拟环境
-python3 -m venv venv
-source venv/bin/activate  # macOS/Linux
-# 或 venv\Scripts\activate  # Windows
-
-# 安装依赖（如果遇到代理问题）
-NO_PROXY='*' no_proxy='*' pip install Flask Flask-CORS python-dotenv
+go version
 ```
+
+如未安装，访问：https://golang.org/dl/
 
 #### 2. 安装前端依赖
 
@@ -61,14 +59,20 @@ npm install
 npm run build
 ```
 
-#### 4. 启动后端服务器
+#### 4. 下载 Go 依赖
 
 ```bash
-source venv/bin/activate
-NO_PROXY='*' no_proxy='*' PORT=5001 python app.py
+go mod download
 ```
 
-#### 5. 访问应用
+#### 5. 构建并运行 Go 服务器
+
+```bash
+go build -o server main.go
+./server
+```
+
+#### 6. 访问应用
 
 打开浏览器访问：http://localhost:5001
 
@@ -76,10 +80,9 @@ NO_PROXY='*' no_proxy='*' PORT=5001 python app.py
 
 如果你想同时开发前端和后端，可以分别启动：
 
-**终端 1 - 后端（Flask）**:
+**终端 1 - 后端（Go）**:
 ```bash
-source venv/bin/activate
-NO_PROXY='*' no_proxy='*' PORT=5001 python app.py
+go run main.go
 # 后端运行在 http://localhost:5001
 ```
 
@@ -129,9 +132,9 @@ todo_test/
 ├── dist/                # 前端构建产物（自动生成）
 ├── data/                # 数据存储目录
 │   └── todos.json       # Todo 数据文件
-├── venv/                # Python 虚拟环境
-├── app.py               # Flask 后端主文件
-├── requirements.txt     # Python 依赖
+├── main.go              # Go 后端主文件
+├── go.mod               # Go 模块定义
+├── go.sum               # Go 依赖锁定
 ├── package.json         # Node.js 依赖
 ├── vite.config.js       # Vite 配置
 ├── index.html           # HTML 模板
@@ -198,7 +201,7 @@ proxy: {
 
 ## 📝 开发笔记
 
-### 从 Node.js 到 Vue + Flask 的改写要点
+### 从 Node.js 到 Vue + Go 的改写要点
 
 1. **前端框架化**
    - 原：原生 JavaScript DOM 操作
@@ -206,16 +209,16 @@ proxy: {
 
 2. **后端语言切换**
    - 原：Node.js + Express 风格
-   - 新：Python + Flask RESTful API
+   - 新：Go + Gorilla Mux RESTful API
 
-3. **构建工具现代化**
-   - 原：无构建工具，直接提供静态文件
-   - 新：Vite 构建，支持热重载和优化
+3. **性能优化**
+   - Go 的编译型特性带来更高的执行效率
+   - 内置并发支持，goroutine 轻量级线程
+   - 更小的内存占用
 
-4. **开发体验提升**
-   - 单文件组件（SFC）
-   - TypeScript 支持（可选）
-   - 开发服务器热重载
+4. **部署便利性**
+   - 单一二进制文件，无需运行时环境
+   - Docker 镜像更小（使用 Alpine 基础镜像）
 
 ## 🎯 Git 推送命令
 
@@ -252,9 +255,14 @@ PORT=5001
 
 ### Python 包安装失败（代理问题）
 
+该问题已不存在，使用 Go 不需要 Python 环境。
+
+### Go 依赖下载失败
+
 ```bash
-# 禁用代理安装
-NO_PROXY='*' no_proxy='*' pip install -r requirements.txt
+# 设置 Go 代理（国内用户）
+export GOPROXY=https://goproxy.cn,direct
+go mod download
 ```
 
 ### 前端构建失败

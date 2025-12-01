@@ -1,13 +1,20 @@
-__pycache__/
-*.py[cod]
-*$py.class
+# Go
+server
+*.exe
+*.exe~
+*.dll
 *.so
-.Python
-env/
-venv/
-ENV/
-data/
-dist/
+*.dylib
+*.test
+*.out
+go.work
+
+# Node.js
 node_modules/
 .DS_Store
 .env.local
+
+# Build outputs
+data/
+dist/
+venv/
